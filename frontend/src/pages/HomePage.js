@@ -23,7 +23,7 @@ const HomePage = () => {
   // GET CATEGORIES
   const getAllCategory = async () => {
     try {
-      const { data } = await axios.get("/api/v1/category/get-category");
+      const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/category/get-category`);
       if (data?.success) setCategories(data.category || []);
     } catch (error) {
       console.log(error);
@@ -34,7 +34,7 @@ const HomePage = () => {
   const getAllProducts = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.get(`/api/v1/product/product-list/${page}`);
+      const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/product/product-list/${page}`);
       setProducts(data?.products || []);
       setLoading(false);
     } catch (error) {
@@ -47,7 +47,7 @@ const HomePage = () => {
   // GET TOTAL
   const getTotal = async () => {
     try {
-      const { data } = await axios.get("/api/v1/product/product-count");
+      const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/product/product-count`);
       setTotal(data?.total || 0);
     } catch (error) {
       console.log(error);
@@ -66,7 +66,7 @@ const HomePage = () => {
   // FILTER
   const filterProduct = async () => {
     try {
-      const { data } = await axios.post("/api/v1/product/product-filters", {
+      const { data } = await axios.post(`${process.env.REACT_APP_API}/api/v1/product/product-filters`, {
         checked,
         radio,
       });
@@ -89,7 +89,7 @@ const HomePage = () => {
   const loadMore = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.get(`/api/v1/product/product-list/${page}`);
+      const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/product/product-list/${page}`);
       setProducts([...(products || []), ...(data?.products || [])]);
       setLoading(false);
     } catch (error) {
@@ -154,7 +154,7 @@ const HomePage = () => {
                   style={{ width: "18rem" }}
                 >
                   <img
-                    src={`/api/v1/product/product-photo/${p._id}`}
+                    src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${p._id}`}
                     className="card-img-top"
                     alt={p?.name}
                   />
