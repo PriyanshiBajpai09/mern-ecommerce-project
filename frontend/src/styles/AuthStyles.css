@@ -1,0 +1,72 @@
+.auth-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 0;
+}
+
+.auth-box {
+  width: 80%;
+  max-width: 1000px;
+  background: #0f172a;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.left-panel {
+  display: flex;
+  background: url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e")
+    no-repeat center;
+  background-size: cover;
+  min-height: 100%;
+  align-items: flex-end;
+  padding: 30px;
+  color: white;
+}
+
+.left-content {
+  background: rgba(0, 0, 0, 0.4);
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.right-panel {
+  padding: 50px;
+  color: white;
+}
+
+.auth-title {
+  margin-bottom: 20px;
+  color: #e6c07b;
+}
+
+.right-panel input {
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+}
+
+.btn-auth {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #1a3d63, #4a7fa7);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  border: none;
+  color: white;
+  margin-top: 10px;
+}
+
+.forgot-btn {
+  background: none;
+  border: none;
+  color: #ccc;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
