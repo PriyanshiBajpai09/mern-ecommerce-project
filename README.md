@@ -8,6 +8,7 @@
 ## 🌐 Live Links
 
 🔗 **Frontend:** https://your-vercel-link.vercel.app
+
 ⚙️ **Backend:** https://mern-backend-jozu.onrender.com
 
 ---
@@ -51,21 +52,6 @@
 
 * 🌍 Frontend → Vercel
 * 🖥️ Backend → Render
-
----
-
-## 📁 Folder Structure
-
-mern-ecommerce-project/
-│
-├── frontend/        ⚛️ React Frontend
-├── controllers/     ⚙️ Backend Logic
-├── models/          🗄️ MongoDB Models
-├── routes/          🔗 API Routes
-├── middleware/      🔐 Authentication
-├── config/          ⚙️ Config Files
-└── server.js        🚀 Entry Point
-
 
 ---
 
