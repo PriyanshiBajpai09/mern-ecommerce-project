@@ -106,43 +106,62 @@ const HomePage = () => {
   };
 
   return (
-    <Layout title={"All Products"}>
-      <div className="container-fluid row mt-3 home-container">
+  <Layout title={"All Products"}>
+    <div
+      className="container-fluid py-4"
+      style={{
+        background: "linear-gradient(135deg, #0A1931, #1A3D63)",
+        minHeight: "100vh",
+      }}
+    >
+      <div className="row">
 
         {/* FILTER */}
-        <div className="col-md-2 filter-box">
-          <h5 className="filter-title">Categories</h5>
-
-          {categories?.map((c) => (
-            <Checkbox
-              key={c._id}
-              onChange={(e) => handleFilter(e.target.checked, c._id)}
-            >
-              {c.name}
-            </Checkbox>
-          ))}
-
-          <h5 className="filter-title mt-4">Price</h5>
-
-          <Radio.Group onChange={(e) => setRadio(e.target.value)}>
-            {Prices?.map((p) => (
-              <div key={p._id}>
-                <Radio value={p.array}>{p.name}</Radio>
-              </div>
-            ))}
-          </Radio.Group>
-
-          <button
-            className="btn btn-danger mt-3"
-            onClick={() => window.location.reload()}
+        <div className="col-md-3 mb-3">
+          <div
+            style={{
+              background: "rgba(74,127,167,0.15)",
+              backdropFilter: "blur(10px)",
+              borderRadius: "15px",
+              padding: "20px",
+              color: "#EAF4FF",
+            }}
           >
-            Reset
-          </button>
+            <h5 className="filter-title">Categories</h5>
+
+            {categories?.map((c) => (
+              <Checkbox
+                key={c._id}
+                onChange={(e) => handleFilter(e.target.checked, c._id)}
+              >
+                {c.name}
+              </Checkbox>
+            ))}
+
+            <h5 className="filter-title mt-4">Price</h5>
+
+            <Radio.Group onChange={(e) => setRadio(e.target.value)}>
+              {Prices?.map((p) => (
+                <div key={p._id}>
+                  <Radio value={p.array}>{p.name}</Radio>
+                </div>
+              ))}
+            </Radio.Group>
+
+            <button
+              className="btn btn-danger mt-3"
+              onClick={() => window.location.reload()}
+            >
+              Reset
+            </button>
+          </div>
         </div>
 
-        {/* PRODUCTS */}
-        <div className="col-md-9 offset-1">
-          <h2 className="text-center home-title">Explore Products</h2>
+        <div className="col-md-9">
+
+          <h2 className="text-center home-title" style={{ color: "#E6C07B" }}>
+            Explore Products
+          </h2>
 
           <div className="d-flex flex-wrap justify-content-center">
 
@@ -150,44 +169,80 @@ const HomePage = () => {
               products.map((p) => (
                 <div
                   key={p._id}
-                  className="card m-3"
-                  style={{ width: "18rem" }}
+                  className="card m-3 shadow-lg"
+                  style={{
+                    width: "18rem",
+                    height: "400px",
+                    background: "rgba(255,255,255,0.05)",
+                    backdropFilter: "blur(10px)",
+                    color: "#EAF4FF",
+                    borderRadius: "15px",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                  }}
                 >
                   <img
                     src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${p._id}`}
-                    className="card-img-top"
                     alt={p?.name}
+                    style={{
+                      height: "180px",
+                      width: "100%",
+                      objectFit: "contain",
+                      padding: "10px",
+                    }}
                   />
 
-                  <div className="card-body">
-                    <h5 className="card-title">{p?.name}</h5>
+                  <div className="card-body d-flex flex-column justify-content-between">
+                    <div>
+                      <h5>{p?.name}</h5>
 
-                    <p className="card-text">
-                      {p?.description?.substring(0, 40) || "No description"}...
-                    </p>
+                      <p
+                        style={{
+                          fontSize: "14px",
+                          height: "40px",
+                          overflow: "hidden",
+                        }}
+                      >
+                        {p?.description?.substring(0, 40)}...
+                      </p>
 
-                    <p className="card-text">$ {p?.price}</p>
+                      <p style={{ color: "#E6C07B" }}>
+                        $ {p?.price}
+                      </p>
+                    </div>
 
-                    <button
-                      className="btn btn-primary me-2"
-                      onClick={() => navigate(`/product/${p.slug}`)}
-                    >
-                      Details
-                    </button>
+                    <div className="d-flex justify-content-between">
+                      <button
+                        className="btn btn-sm"
+                        style={{
+                          background: "linear-gradient(90deg, #1A3D63, #4A7FA7)",
+                          color: "white",
+                        }}
+                        onClick={() => navigate(`/product/${p.slug}`)}
+                      >
+                        Details
+                      </button>
 
-                    <button
-                      className="btn btn-secondary"
-                      onClick={() => {
-                        setCart([...(cart || []), p]);
-                        localStorage.setItem(
-                          "cart",
-                          JSON.stringify([...(cart || []), p])
-                        );
-                        toast.success("Added to cart");
-                      }}
-                    >
-                      Add
-                    </button>
+                      <button
+                        className="btn btn-sm"
+                        style={{
+                          background: "#0A1931",
+                          border: "1px solid #4A7FA7",
+                          color: "white",
+                        }}
+                        onClick={() => {
+                          setCart([...(cart || []), p]);
+                          localStorage.setItem(
+                            "cart",
+                            JSON.stringify([...(cart || []), p])
+                          );
+                          toast.success("Added to cart");
+                        }}
+                      >
+                        Add
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))
@@ -197,7 +252,6 @@ const HomePage = () => {
 
           </div>
 
-          {/* LOAD MORE */}
           <div className="text-center mt-3">
             {products?.length < total && (
               <button
@@ -208,11 +262,12 @@ const HomePage = () => {
               </button>
             )}
           </div>
-        </div>
 
+        </div>
       </div>
-    </Layout>
-  );
+    </div>
+  </Layout>
+);
 };
 
 export default HomePage;
