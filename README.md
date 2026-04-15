@@ -7,7 +7,7 @@
 
 ## 🌐 Live Links
 
-🔗 **Frontend:** [https://your-vercel-link.vercel.app](https://mern-ecommerce-project-green.vercel.app/\)
+🔗 **Frontend:** https://mern-ecommerce-project-green.vercel.app/
 
 ⚙️ **Backend:** https://mern-backend-jozu.onrender.com
 
