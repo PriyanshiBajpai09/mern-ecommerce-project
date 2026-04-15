@@ -22,7 +22,7 @@ const UpdateProduct = () => {
   const getSingleProduct = async () => {
     try {
       const { data } = await axios.get(
-        `/api/v1/product/get-product/${params.slug}`
+        `${process.env.REACT_APP_API}/api/v1/product/get-product/${params.slug}`
       );
 
       const p = data?.product;
@@ -43,10 +43,11 @@ const UpdateProduct = () => {
     getSingleProduct();
   }, []);
 
-  // GET CATEGORY
   const getAllCategory = async () => {
     try {
-      const { data } = await axios.get("/api/v1/category/get-category");
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_API}/api/v1/category/get-category`
+      );
       if (data?.success) setCategories(data?.category);
     } catch {
       toast.error("Error fetching category");
@@ -57,7 +58,6 @@ const UpdateProduct = () => {
     getAllCategory();
   }, []);
 
-  // UPDATE
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
@@ -72,7 +72,7 @@ const UpdateProduct = () => {
       if (photo) productData.append("photo", photo);
 
       const { data } = await axios.put(
-        `/api/v1/product/update-product/${id}`,
+        `${process.env.REACT_APP_API}/api/v1/product/update-product/${id}`,
         productData
       );
 
@@ -85,13 +85,14 @@ const UpdateProduct = () => {
     }
   };
 
-  // DELETE
   const handleDelete = async () => {
     const ok = window.confirm("Delete this product?");
     if (!ok) return;
 
     try {
-      await axios.delete(`/api/v1/product/delete-product/${id}`);
+      await axios.delete(
+        `${process.env.REACT_APP_API}/api/v1/product/delete-product/${id}`
+      );
       toast.success("Product Deleted");
       navigate("/dashboard/admin/products");
     } catch {
@@ -161,7 +162,7 @@ const UpdateProduct = () => {
                   src={
                     photo
                       ? URL.createObjectURL(photo)
-                      : `/api/v1/product/product-photo/${id}`
+                      : `${process.env.REACT_APP_API}/api/v1/product/product-photo/${id}`
                   }
                   height="200"
                   style={{ borderRadius: "10px" }}
@@ -175,7 +176,6 @@ const UpdateProduct = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Product Name"
-                style={{ background: "rgba(255,255,255,0.08)", color: "white" }}
               />
 
               <textarea
@@ -183,7 +183,6 @@ const UpdateProduct = () => {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Description"
-                style={{ background: "rgba(255,255,255,0.08)", color: "white" }}
               />
 
               <input
@@ -192,7 +191,6 @@ const UpdateProduct = () => {
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
                 placeholder="Price"
-                style={{ background: "rgba(255,255,255,0.08)", color: "white" }}
               />
 
               <input
@@ -201,7 +199,6 @@ const UpdateProduct = () => {
                 value={quantity}
                 onChange={(e) => setQuantity(e.target.value)}
                 placeholder="Quantity"
-                style={{ background: "rgba(255,255,255,0.08)", color: "white" }}
               />
 
               <select
@@ -216,11 +213,6 @@ const UpdateProduct = () => {
 
               <button
                 className="btn w-100 mb-2"
-                style={{
-                  background: "linear-gradient(90deg, #1A3D63, #4A7FA7)",
-                  color: "white",
-                  borderRadius: "10px",
-                }}
                 onClick={handleUpdate}
               >
                 UPDATE PRODUCT
@@ -228,11 +220,6 @@ const UpdateProduct = () => {
 
               <button
                 className="btn w-100"
-                style={{
-                  background: "#E6C07B",
-                  color: "black",
-                  borderRadius: "10px",
-                }}
                 onClick={handleDelete}
               >
                 DELETE PRODUCT

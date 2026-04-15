@@ -60,7 +60,7 @@ const CartPage = () => {
               >
                 <div className="me-3">
                   <img
-                    src={`/api/v1/product/product-photo/${p._id}`}
+                    src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${p._id}`}
                     alt={p.name}
                     style={{
                       width: "100px",

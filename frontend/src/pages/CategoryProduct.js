@@ -20,7 +20,7 @@ const CategoryProduct = () => {
   const getProductsByCat = async () => {
     try {
       const { data } = await axios.get(
-        `/api/v1/product/product-category/${params.slug}`
+        `${process.env.REACT_APP_API}/api/v1/product/product-category/${params.slug}`
       );
       setProducts(data?.products);
       setCategory(data?.category);
@@ -64,7 +64,7 @@ const CategoryProduct = () => {
               }}
             >
               <img
-                src={`/api/v1/product/product-photo/${p._id}`}
+                src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${p._id}`}
                 alt={p.name}
                 style={{
                   height: "180px",
@@ -78,7 +78,7 @@ const CategoryProduct = () => {
                 <div>
                   <h5>{p.name}</h5>
                   <p style={{ fontSize: "14px", height: "40px", overflow: "hidden" }}>
-                    {p.description.substring(0, 40)}...
+                    {p.description?.substring(0, 40)}...
                   </p>
                   <p style={{ color: "#E6C07B" }}>$ {p.price}</p>
                 </div>

@@ -20,7 +20,7 @@ const ProductDetails = () => {
   const getProduct = async () => {
     try {
       const { data } = await axios.get(
-        `/api/v1/product/get-product/${params.slug}`
+        `${process.env.REACT_APP_API}/api/v1/product/get-product/${params.slug}`
       );
       setProduct(data?.product);
       getSimilarProduct(data?.product._id, data?.product.category._id);
@@ -32,7 +32,7 @@ const ProductDetails = () => {
   const getSimilarProduct = async (pid, cid) => {
     try {
       const { data } = await axios.get(
-        `/api/v1/product/related-product/${pid}/${cid}`
+        `${process.env.REACT_APP_API}/api/v1/product/related-product/${pid}/${cid}`
       );
       setRelatedProducts(data?.products);
     } catch (error) {
@@ -53,7 +53,7 @@ const ProductDetails = () => {
         >
           <div className="col-md-6 text-center">
             <img
-              src={`/api/v1/product/product-photo/${product._id}`}
+              src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${product._id}`}
               alt={product.name}
               style={{
                 height: "300px",
@@ -118,7 +118,7 @@ const ProductDetails = () => {
               }}
             >
               <img
-                src={`/api/v1/product/product-photo/${p._id}`}
+                src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${p._id}`}
                 alt={p.name}
                 style={{
                   height: "180px",
@@ -132,7 +132,7 @@ const ProductDetails = () => {
                 <div>
                   <h5>{p.name}</h5>
                   <p style={{ fontSize: "14px", height: "40px", overflow: "hidden" }}>
-                    {p.description.substring(0, 40)}...
+                    {p.description?.substring(0, 40)}...
                   </p>
                   <p style={{ color: "#E6C07B" }}>$ {p.price}</p>
                 </div>
