@@ -2,54 +2,46 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 
 const UserMenu = () => {
+  const linkStyle =
+    "block px-4 py-3 text-sm rounded-md transition";
+
+  const activeStyle =
+    "bg-black text-white";
+
+  const inactiveStyle =
+    "text-gray-600 hover:bg-gray-100";
+
   return (
     <div>
 
-      <h4
-        style={{
-          color: "#E6C07B",
-          marginBottom: "20px",
-          textAlign: "center",
-        }}
-      >
+      {/* TITLE */}
+      <h4 className="text-lg font-semibold mb-6 text-center">
         Dashboard
       </h4>
 
-      <div className="d-flex flex-column gap-2">
+      {/* MENU */}
+      <div className="flex flex-col gap-2">
 
         <NavLink
           to="/dashboard/user/profile"
-          style={({ isActive }) => ({
-            textDecoration: "none",
-            padding: "12px",
-            borderRadius: "10px",
-            background: isActive
-              ? "linear-gradient(90deg, #1A3D63, #4A7FA7)"
-              : "rgba(255,255,255,0.05)",
-            color: "#F6FAFD",
-            transition: "0.3s",
-          })}
+          className={({ isActive }) =>
+            `${linkStyle} ${isActive ? activeStyle : inactiveStyle}`
+          }
         >
           👤 Profile
         </NavLink>
 
         <NavLink
           to="/dashboard/user/orders"
-          style={({ isActive }) => ({
-            textDecoration: "none",
-            padding: "12px",
-            borderRadius: "10px",
-            background: isActive
-              ? "linear-gradient(90deg, #1A3D63, #4A7FA7)"
-              : "rgba(255,255,255,0.05)",
-            color: "#F6FAFD",
-            transition: "0.3s",
-          })}
+          className={({ isActive }) =>
+            `${linkStyle} ${isActive ? activeStyle : inactiveStyle}`
+          }
         >
           📦 Orders
         </NavLink>
 
       </div>
+
     </div>
   );
 };

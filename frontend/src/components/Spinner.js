@@ -13,17 +13,16 @@ const Spinner = () => {
   }, [navigate]);
 
   return (
-    <div
-      className="d-flex justify-content-center align-items-center"
-      style={{
-        height: "100vh",
-        background: "linear-gradient(135deg, #0A1931, #1A3D63)",
-      }}
-    >
-      <div
-        className="spinner-border"
-        style={{ color: "#E6C07B", width: "3rem", height: "3rem" }}
-      ></div>
+    <div className="min-h-screen flex flex-col items-center justify-center gap-6">
+
+      {/* SPINNER */}
+      <div className="w-12 h-12 border-4 border-gray-300 border-t-black rounded-full animate-spin"></div>
+
+      {/* TEXT */}
+      <p className="text-sm text-gray-500 tracking-wide">
+        Loading...
+      </p>
+
     </div>
   );
 };

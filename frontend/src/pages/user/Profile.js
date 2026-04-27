@@ -51,132 +51,95 @@ const Profile = () => {
         toast.success("Profile Updated Successfully");
       }
     } catch (error) {
-      console.log(error);
       toast.error("Something went wrong");
     }
   };
 
   return (
     <Layout>
-      <div
-        className="container-fluid py-4"
-        style={{
-          background: "linear-gradient(135deg, #0A1931, #1A3D63)",
-          minHeight: "100vh",
-        }}
-      >
-        <div className="row">
+      <div className="bg-transparent min-h-screen pt-[90px] flex justify-center">
 
-          <div className="col-md-3 mb-3">
-            <div
-              style={{
-                background: "rgba(74,127,167,0.15)",
-                backdropFilter: "blur(10px)",
-                borderRadius: "15px",
-                padding: "20px",
-                color: "#EAF4FF",
-              }}
-            >
-              <UserMenu />
+        <div className="w-full max-w-6xl px-6 py-10">
+
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+
+            {/* LEFT MENU */}
+            <div className="md:col-span-1">
+              <div className="bg-white border rounded-xl p-5 shadow-sm sticky top-[100px]">
+                <UserMenu />
+              </div>
             </div>
-          </div>
 
-          <div className="col-md-9 d-flex justify-content-center">
-            <div
-              style={{
-                width: "100%",
-                maxWidth: "500px",
-                background: "rgba(255,255,255,0.05)",
-                backdropFilter: "blur(12px)",
-                borderRadius: "20px",
-                padding: "30px",
-                color: "#F6FAFD",
-                boxShadow: "0 20px 40px rgba(0,0,0,0.4)",
-              }}
-            >
-              <h3
-                style={{
-                  color: "#E6C07B",
-                  marginBottom: "20px",
-                  textAlign: "center",
-                }}
-              >
-                Update Profile
-              </h3>
+            {/* RIGHT FORM */}
+            <div className="md:col-span-3 flex justify-center">
 
-              <form onSubmit={handleSubmit}>
+              <div className="w-full max-w-md bg-white border rounded-xl p-8 shadow-sm">
 
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Enter your name"
-                  className="form-control mb-3"
-                  style={inputStyle}
-                />
-
-                <input
-                  type="email"
-                  value={email}
-                  disabled
-                  className="form-control mb-3"
-                  style={{ ...inputStyle, opacity: 0.6 }}
-                />
-
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="New password"
-                  className="form-control mb-3"
-                  style={inputStyle}
-                />
-
-                <input
-                  type="text"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  placeholder="Phone"
-                  className="form-control mb-3"
-                  style={inputStyle}
-                />
-
-                <input
-                  type="text"
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
-                  placeholder="Address"
-                  className="form-control mb-3"
-                  style={inputStyle}
-                />
-
-                <button
-                  type="submit"
-                  className="btn w-100"
-                  style={{
-                    background: "linear-gradient(90deg, #1A3D63, #4A7FA7)",
-                    color: "white",
-                    borderRadius: "10px",
-                    padding: "10px",
-                  }}
-                >
+                <h2 className="text-xl font-semibold mb-6 text-center">
                   Update Profile
-                </button>
+                </h2>
 
-              </form>
+                <form onSubmit={handleSubmit} className="space-y-4">
+
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Enter your name"
+                    className="w-full border px-4 py-2 rounded-md text-sm outline-none focus:border-black"
+                  />
+
+                  <input
+                    type="email"
+                    value={email}
+                    disabled
+                    className="w-full border px-4 py-2 rounded-md text-sm bg-gray-100 text-gray-500"
+                  />
+
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="New password"
+                    className="w-full border px-4 py-2 rounded-md text-sm outline-none focus:border-black"
+                  />
+
+                  <input
+                    type="text"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="Phone"
+                    className="w-full border px-4 py-2 rounded-md text-sm outline-none focus:border-black"
+                  />
+
+                  <input
+                    type="text"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                    placeholder="Address"
+                    className="w-full border px-4 py-2 rounded-md text-sm outline-none focus:border-black"
+                  />
+
+                  <button
+                    type="submit"
+                    className="w-full mt-4 bg-black text-white py-2.5 text-sm rounded-md hover:bg-gray-800 transition"
+                  >
+                    Update Profile
+                  </button>
+
+                </form>
+
+              </div>
+
             </div>
+
           </div>
+
         </div>
+
       </div>
     </Layout>
   );
-};
-
-const inputStyle = {
-  background: "rgba(255,255,255,0.08)",
-  border: "1px solid rgba(255,255,255,0.2)",
-  color: "white",
-  borderRadius: "10px",
 };
 
 export default Profile;

@@ -10,156 +10,173 @@ const CartPage = () => {
   const navigate = useNavigate();
 
   const totalPrice = () => {
-    try {
-      let total = 0;
-      cart?.forEach((item) => {
-        total += item.price;
-      });
-      return total.toLocaleString("en-US", {
-        style: "currency",
-        currency: "USD",
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    let total = 0;
+    cart?.forEach((item) => {
+      total += item.price * (item.quantity || 1);
+    });
+    return total;
   };
 
- 
   const removeCartItem = (pid) => {
     let updatedCart = cart.filter((item) => item._id !== pid);
     setCart(updatedCart);
     localStorage.setItem("cart", JSON.stringify(updatedCart));
   };
 
+  const updateQuantity = (pid, type) => {
+    const updatedCart = cart.map((item) => {
+      if (item._id === pid) {
+        if (type === "inc") {
+          return { ...item, quantity: (item.quantity || 1) + 1 };
+        }
+        if (type === "dec" && item.quantity > 1) {
+          return { ...item, quantity: item.quantity - 1 };
+        }
+      }
+      return item;
+    });
+
+    setCart(updatedCart);
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+  };
+
   return (
     <Layout>
-      <div className="container py-4">
+      <div className="min-h-screen flex justify-center pt-[90px]">
 
-        <div className="text-center mb-4">
-          <h2 style={{ color: "#E6C07B" }}>
-            Hello {auth?.user?.name || "Guest"}
-          </h2>
-          <p style={{ color: "#cbd5e1" }}>
-            {cart?.length
-              ? `You have ${cart.length} items in your cart`
-              : "Your cart is empty"}
-          </p>
-        </div>
+        <div className="w-full max-w-6xl px-6 py-12">
 
-        <div className="row">
-          <div className="col-md-8">
-            {cart?.map((p) => (
-              <div
-                key={p._id}
-                className="d-flex mb-3 p-3 rounded-4 shadow-lg"
-                style={{
-                  background: "rgba(255,255,255,0.05)",
-                  backdropFilter: "blur(10px)",
-                  color: "#EAF4FF",
-                }}
-              >
-                <div className="me-3">
-                  <img
-                    src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${p._id}`}
-                    alt={p.name}
-                    style={{
-                      width: "100px",
-                      height: "100px",
-                      objectFit: "contain",
-                    }}
-                  />
-                </div>
-
-                <div className="flex-grow-1">
-                  <h5>{p.name}</h5>
-                  <p style={{ fontSize: "14px" }}>
-                    {p.description.substring(0, 50)}...
-                  </p>
-                  <p style={{ color: "#E6C07B" }}>$ {p.price}</p>
-                </div>
-
-                <div>
-                  <button
-                    className="btn btn-sm"
-                    style={{
-                      background: "#0A1931",
-                      border: "1px solid #4A7FA7",
-                      color: "white",
-                    }}
-                    onClick={() => removeCartItem(p._id)}
-                  >
-                    Remove
-                  </button>
-                </div>
-              </div>
-            ))}
+          {/* TITLE */}
+          <div className="text-center mb-12">
+            <h1 className="text-4xl font-semibold tracking-tight">
+              Shopping Cart
+            </h1>
+            <p className="text-gray-500 mt-2">
+              Home / Cart
+            </p>
           </div>
 
-          <div className="col-md-4">
-            <div
-              className="p-4 rounded-4 shadow-lg"
-              style={{
-                background: "rgba(255,255,255,0.05)",
-                backdropFilter: "blur(10px)",
-                color: "#EAF4FF",
-              }}
-            >
-              <h4 style={{ color: "#E6C07B" }}>Cart Summary</h4>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
 
-              <hr />
+            {/* LEFT SIDE */}
+            <div className="md:col-span-2 space-y-6">
 
-              <h5>Total: {totalPrice()}</h5>
-
-              {auth?.user?.address ? (
-                <>
-                  <p className="mt-3">
-                    <strong>Address:</strong>
-                  </p>
-                  <p>{auth?.user?.address}</p>
-
-                  <button
-                    className="btn w-100 mt-2"
-                    style={{
-                      background: "linear-gradient(90deg, #1A3D63, #4A7FA7)",
-                      color: "white",
-                    }}
-                    onClick={() =>
-                      navigate("/dashboard/user/profile")
-                    }
-                  >
-                    Update Address
-                  </button>
-                </>
-              ) : auth?.token ? (
-                <button
-                  className="btn w-100 mt-3"
-                  style={{
-                    background: "linear-gradient(90deg, #1A3D63, #4A7FA7)",
-                    color: "white",
-                  }}
-                  onClick={() =>
-                    navigate("/dashboard/user/profile")
-                  }
-                >
-                  Add Address
-                </button>
+              {cart?.length === 0 ? (
+                <div className="text-center py-20 text-gray-500">
+                  🛒 Your cart is empty
+                </div>
               ) : (
-                <button
-                  className="btn w-100 mt-3"
-                  style={{
-                    background: "#E6C07B",
-                    color: "black",
-                  }}
-                  onClick={() =>
-                    navigate("/login", { state: "/cart" })
-                  }
-                >
-                  Login to Checkout
-                </button>
+                cart?.map((p) => (
+                  <div
+                    key={p._id}
+                    className="flex items-center justify-between bg-white/90 backdrop-blur-sm p-5 rounded-xl border shadow-sm hover:shadow-md transition"
+                  >
+                    {/* LEFT */}
+                    <div className="flex items-center gap-4">
+
+                      <button
+                        onClick={() => removeCartItem(p._id)}
+                        className="text-gray-400 hover:text-red-500 text-lg"
+                      >
+                        ✕
+                      </button>
+
+                      <img
+                        src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${p._id}`}
+                        alt={p.name}
+                        className="w-20 h-20 object-contain"
+                      />
+
+                      <div>
+                        <h4 className="font-medium">{p.name}</h4>
+                        <p className="text-sm text-gray-500">
+                          {p.description?.substring(0, 40)}...
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* PRICE */}
+                    <p className="text-sm font-medium">
+                      ₹ {p.price}
+                    </p>
+
+                    {/* QUANTITY */}
+                    <div className="flex items-center border rounded-md overflow-hidden">
+
+                      <button
+                        className="px-3 py-1 hover:bg-gray-100"
+                        onClick={() => updateQuantity(p._id, "dec")}
+                      >
+                        -
+                      </button>
+
+                      <span className="px-4 text-sm">
+                        {p.quantity || 1}
+                      </span>
+
+                      <button
+                        className="px-3 py-1 hover:bg-gray-100"
+                        onClick={() => updateQuantity(p._id, "inc")}
+                      >
+                        +
+                      </button>
+
+                    </div>
+
+                  </div>
+                ))
               )}
+
             </div>
+
+            {/* RIGHT SIDE */}
+            <div className="bg-white/90 backdrop-blur-sm p-6 rounded-xl border shadow-sm h-fit">
+
+              <h3 className="text-xl font-semibold mb-6">
+                Order Summary
+              </h3>
+
+              <div className="flex justify-between mb-3 text-sm">
+                <span>Items</span>
+                <span>{cart.length}</span>
+              </div>
+
+              <div className="flex justify-between mb-3 text-sm">
+                <span>Subtotal</span>
+                <span>₹ {totalPrice()}</span>
+              </div>
+
+              <div className="flex justify-between mb-3 text-sm">
+                <span>Shipping</span>
+                <span>Free</span>
+              </div>
+
+              <hr className="my-4" />
+
+              <div className="flex justify-between mb-6 font-medium text-lg">
+                <span>Total</span>
+                <span>₹ {totalPrice()}</span>
+              </div>
+
+              <button
+                className="w-full bg-black text-white py-3 text-sm tracking-wide rounded-md hover:bg-gray-800 transition"
+                onClick={() =>
+                  auth?.token
+                    ? navigate("/checkout")
+                    : navigate("/login", { state: "/cart" })
+                }
+              >
+                {auth?.token
+                  ? "Proceed to Checkout"
+                  : "Login to Checkout"}
+              </button>
+
+            </div>
+
           </div>
+
         </div>
+
       </div>
     </Layout>
   );

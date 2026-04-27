@@ -5,66 +5,48 @@ import Layout from "../../components/layout/Layout";
 const Orders = () => {
   return (
     <Layout>
-      <div
-        className="container-fluid py-4"
-        style={{
-          background: "linear-gradient(135deg, #0A1931, #1A3D63)",
-          minHeight: "100vh",
-        }}
-      >
-        <div className="row">
+      <div className="bg-transparent min-h-screen pt-[90px] flex justify-center">
 
-          <div className="col-md-3 mb-3">
-            <div
-              style={{
-                background: "rgba(74,127,167,0.15)",
-                backdropFilter: "blur(10px)",
-                borderRadius: "15px",
-                padding: "20px",
-                color: "#EAF4FF",
-                height: "100%",
-              }}
-            >
-              <UserMenu />
+        <div className="w-full max-w-6xl px-6 py-10">
+
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+
+            {/* LEFT MENU */}
+            <div className="md:col-span-1">
+              <div className="bg-white border rounded-xl p-5 shadow-sm sticky top-[100px]">
+                <UserMenu />
+              </div>
             </div>
-          </div>
 
-          <div className="col-md-9 d-flex justify-content-center">
-            <div
-              style={{
-                width: "100%",
-                maxWidth: "700px",
-                background: "rgba(255,255,255,0.05)",
-                backdropFilter: "blur(12px)",
-                borderRadius: "20px",
-                padding: "30px",
-                color: "#F6FAFD",
-                boxShadow: "0 20px 40px rgba(0,0,0,0.4)",
-              }}
-            >
-              <h2
-                style={{
-                  color: "#E6C07B",
-                  marginBottom: "20px",
-                  textAlign: "center",
-                }}
-              >
-                My Orders
-              </h2>
+            {/* RIGHT CONTENT */}
+            <div className="md:col-span-3">
 
-              <div
-                style={{
-                  textAlign: "center",
-                  padding: "30px",
-                  color: "#B3CFE5",
-                }}
-              >
-                📦 No orders yet
+              <div className="bg-white border rounded-xl p-8 shadow-sm">
+
+                {/* TITLE */}
+                <h2 className="text-xl font-semibold mb-6">
+                  My Orders
+                </h2>
+
+                {/* EMPTY STATE */}
+                <div className="flex flex-col items-center justify-center py-16 text-center">
+
+                  <div className="text-5xl mb-4">📦</div>
+
+                  <p className="text-gray-500 text-sm">
+                    No orders yet
+                  </p>
+
+                </div>
+
               </div>
 
             </div>
+
           </div>
+
         </div>
+
       </div>
     </Layout>
   );

@@ -8,53 +8,62 @@ const Categories = () => {
 
   return (
     <Layout title={"All Categories"}>
-      <div
-        className="container-fluid d-flex justify-content-center align-items-center"
-        style={{
-          minHeight: "100vh",
-          background: "linear-gradient(135deg, #0A1931, #1A3D63)",
-        }}
-      >
-        <div className="row w-75 text-center">
-          <h2 className="mb-4" style={{ color: "#E6C07B" }}>
-            Explore Categories
-          </h2>
 
-          {categories.map((c) => (
-            <div className="col-md-4 mb-4" key={c._id}>
-              <Link to={`/category/${c.slug}`} className="text-decoration-none">
-                <div
-                  className="p-4 rounded-4 shadow-lg"
-                  style={{
-                    background: "rgba(255,255,255,0.05)",
-                    backdropFilter: "blur(10px)",
-                    color: "#EAF4FF",
-                    transition: "0.3s",
-                  }}
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.transform = "translateY(-5px)")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.transform = "translateY(0px)")
-                  }
-                >
-                  <h5
-                    style={{
-                      fontSize: "18px",
-                      fontWeight: "500",
-                      whiteSpace: "nowrap",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                    }}
-                  >
-                    {c.name}
-                  </h5>
-                </div>
-              </Link>
-            </div>
-          ))}
+      {/* HERO SECTION */}
+      <div className="relative h-[50vh] w-full">
+        <img
+          src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1600&auto=format&fit=crop"
+          alt="categories"
+          className="w-full h-full object-cover"
+        />
+
+        <div className="absolute inset-0 bg-black/50"></div>
+
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-center px-4">
+          <h1 className="text-4xl md:text-5xl font-semibold mb-3">
+            Explore Categories
+          </h1>
+          <p className="text-sm md:text-base opacity-90">
+            Find products based on your interests
+          </p>
         </div>
       </div>
+
+      {/* CATEGORY SECTION WITH BG IMAGE */}
+      <div className="relative py-16 flex justify-center overflow-hidden">
+
+        {/* BACKGROUND IMAGE */}
+        <div className="absolute inset-0 -z-10">
+          <img
+            src="https://images.unsplash.com/photo-1521335629791-ce4aec67dd47?q=80&w=1600&auto=format&fit=crop"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-white/30 backdrop-blur-[2px]"></div>
+        </div>
+
+        {/* CONTENT */}
+        <div className="w-full max-w-5xl px-6">
+          <div className="flex flex-wrap justify-center gap-8">
+
+            {categories.map((c) => (
+              <Link key={c._id} to={`/category/${c.slug}`} className="group">
+
+                <div className="bg-white/90 backdrop-blur-sm px-10 py-8 rounded-xl border shadow-sm hover:shadow-md transition duration-300 min-w-[220px] text-center">
+
+                  <h3 className="text-lg font-medium group-hover:tracking-wide transition">
+                    {c.name}
+                  </h3>
+
+                </div>
+
+              </Link>
+            ))}
+
+          </div>
+        </div>
+
+      </div>
+
     </Layout>
   );
 };

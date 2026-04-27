@@ -2,36 +2,21 @@ import React from "react";
 
 const CategoryForm = ({ handleSubmit, value, setValue }) => {
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
 
-      <div className="mb-3">
-        <input
-          type="text"
-          placeholder="Enter category name"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          className="form-control"
-          style={{
-            background: "rgba(255,255,255,0.08)",
-            border: "1px solid rgba(255,255,255,0.2)",
-            color: "#F6FAFD",
-            borderRadius: "10px",
-            padding: "10px",
-          }}
-        />
-      </div>
+      {/* INPUT */}
+      <input
+        type="text"
+        placeholder="Enter category name"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        className="flex-1 border border-gray-300 px-4 py-2.5 rounded-md text-sm outline-none focus:ring-1 focus:ring-black bg-white text-black"
+      />
 
+      {/* BUTTON */}
       <button
         type="submit"
-        className="btn w-100"
-        style={{
-          background: "linear-gradient(90deg, #1A3D63, #4A7FA7)",
-          color: "white",
-          borderRadius: "10px",
-          padding: "10px",
-          border: "none",
-          fontWeight: "500",
-        }}
+        className="bg-black text-white px-5 py-2.5 text-sm rounded-md hover:bg-gray-800 transition whitespace-nowrap"
       >
         {value ? "Save Category" : "Create Category"}
       </button>

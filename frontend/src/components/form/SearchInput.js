@@ -22,10 +22,10 @@ const SearchInput = () => {
 
   return (
     <form
-      className="d-flex align-items-center"
-      role="search"
       onSubmit={handleSubmit}
+      className="flex items-center border border-gray-300 rounded-full overflow-hidden bg-white"
     >
+      {/* INPUT */}
       <input
         type="search"
         placeholder="Search products..."
@@ -33,27 +33,13 @@ const SearchInput = () => {
         onChange={(e) =>
           setValues({ ...values, keyword: e.target.value })
         }
-        style={{
-          padding: "8px 12px",
-          borderRadius: "10px",
-          border: "1px solid rgba(255,255,255,0.2)",
-          background: "rgba(255,255,255,0.08)",
-          color: "#F6FAFD",
-          outline: "none",
-          marginRight: "8px",
-        }}
+        className="px-4 py-2 text-sm w-full outline-none bg-transparent"
       />
 
+      {/* BUTTON */}
       <button
         type="submit"
-        style={{
-          padding: "8px 15px",
-          borderRadius: "10px",
-          border: "none",
-          background: "linear-gradient(90deg, #1A3D63, #4A7FA7)",
-          color: "white",
-          fontWeight: "500",
-        }}
+        className="px-5 py-2 text-sm bg-black text-white hover:bg-gray-800 transition"
       >
         Search
       </button>

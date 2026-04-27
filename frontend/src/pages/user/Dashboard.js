@@ -10,71 +10,80 @@ const Dashboard = () => {
 
   return (
     <Layout>
-      <div
-        className="container-fluid py-4"
-        style={{
-          background: "linear-gradient(135deg, #0A1931, #1A3D63)",
-          minHeight: "100vh",
-        }}
-      >
-        <div className="row">
+      <div className="bg-transparent min-h-screen pt-[90px] flex justify-center">
 
-          <div className="col-md-3 mb-3">
-            <div
-              style={{
-                background: "rgba(74,127,167,0.15)",
-                backdropFilter: "blur(10px)",
-                borderRadius: "15px",
-                padding: "20px",
-                color: "#EAF4FF",
-              }}
-            >
-              <UserMenu />
+        <div className="w-full max-w-6xl px-6 py-10">
+
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+
+            {/* LEFT MENU */}
+            <div className="md:col-span-1">
+              <div className="bg-white border rounded-xl p-5 shadow-sm sticky top-[100px]">
+                <UserMenu />
+              </div>
             </div>
+
+            {/* RIGHT CONTENT */}
+            <div className="md:col-span-3 space-y-8">
+
+              {/* GREETING */}
+              <div className="bg-white border rounded-xl p-6 shadow-sm flex justify-between items-center">
+
+                <div>
+                  <h2 className="text-xl font-semibold">
+                    Hello, {auth?.user?.name} 👋
+                  </h2>
+                  <p className="text-sm text-gray-500 mt-1">
+                    Welcome back to your dashboard
+                  </p>
+                </div>
+
+                <div className="text-3xl">🧑‍💻</div>
+
+              </div>
+
+              {/* PROFILE CARD */}
+              <div className="bg-white border rounded-xl p-8 shadow-sm">
+
+                <h3 className="text-lg font-semibold mb-6">
+                  User Profile
+                </h3>
+
+                <div className="space-y-4 text-sm text-gray-700">
+
+                  <div className="flex justify-between border-b pb-2">
+                    <span className="text-gray-500">Name</span>
+                    <span className="font-medium">{auth?.user?.name}</span>
+                  </div>
+
+                  <div className="flex justify-between border-b pb-2">
+                    <span className="text-gray-500">Email</span>
+                    <span className="font-medium">{auth?.user?.email}</span>
+                  </div>
+
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Address</span>
+                    <span className="font-medium">{auth?.user?.address}</span>
+                  </div>
+
+                </div>
+
+                {/* BUTTON */}
+                <button
+                  onClick={() => navigate("/dashboard/user/profile")}
+                  className="w-full mt-8 bg-black text-white py-2.5 text-sm rounded-md hover:bg-gray-800 transition"
+                >
+                  Edit Profile
+                </button>
+
+              </div>
+
+            </div>
+
           </div>
 
-          <div className="col-md-9 d-flex justify-content-center align-items-center">
-            <div
-              style={{
-                width: "100%",
-                maxWidth: "500px",
-                background: "rgba(255,255,255,0.05)",
-                backdropFilter: "blur(12px)",
-                borderRadius: "20px",
-                padding: "30px",
-                color: "#F6FAFD",
-                boxShadow: "0 20px 40px rgba(0,0,0,0.4)",
-              }}
-            >
-              <h2
-                style={{
-                  color: "#E6C07B",
-                  marginBottom: "20px",
-                  textAlign: "center",
-                }}
-              >
-                User Profile
-              </h2>
-
-              <p><strong>Name:</strong> {auth?.user?.name}</p>
-              <p><strong>Email:</strong> {auth?.user?.email}</p>
-              <p><strong>Address:</strong> {auth?.user?.address}</p>
-
-              <button
-                className="btn w-100 mt-3"
-                style={{
-                  background: "linear-gradient(90deg, #1A3D63, #4A7FA7)",
-                  color: "white",
-                  borderRadius: "10px",
-                }}
-                onClick={() => navigate("/dashboard/user/profile")}
-              >
-                Edit Profile
-              </button>
-
-            </div>
-          </div>
         </div>
+
       </div>
     </Layout>
   );

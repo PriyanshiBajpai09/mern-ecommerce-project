@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../context/auth";
-import { Outlet } from "react-router-dom";
+import { Outlet, Navigate } from "react-router-dom";
 import axios from "axios";
 import Spinner from "../Spinner";
 
@@ -20,8 +20,17 @@ export default function AdminRoute() {
       }
     };
 
-    if (auth?.token) authCheck();
+    if (auth?.token) {
+      authCheck();
+    } else {
+      setOk(false);
+    }
   }, [auth?.token]);
+
+  // 🔥 MAIN FIX
+  if (!auth?.token) {
+    return <Navigate to="/login" replace />;
+  }
 
   return ok ? <Outlet /> : <Spinner />;
 }

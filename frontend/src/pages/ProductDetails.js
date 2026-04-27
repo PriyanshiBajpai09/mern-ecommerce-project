@@ -1,177 +1,175 @@
 import React, { useState, useEffect } from "react";
 import Layout from "../components/layout/Layout";
-import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
+import axios from "axios";
 import { useCart } from "../context/cart";
+import toast from "react-hot-toast";
 
 const ProductDetails = () => {
   const params = useParams();
   const navigate = useNavigate();
   const [cart, setCart] = useCart();
 
-  const [product, setProduct] = useState({});
+  const [product, setProduct] = useState(null);
   const [relatedProducts, setRelatedProducts] = useState([]);
 
-  useEffect(() => {
-    if (params?.slug) getProduct();
-  }, [params?.slug]);
-
+  // GET PRODUCT
   const getProduct = async () => {
     try {
       const { data } = await axios.get(
         `${process.env.REACT_APP_API}/api/v1/product/get-product/${params.slug}`
       );
       setProduct(data?.product);
-      getSimilarProduct(data?.product._id, data?.product.category._id);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const getSimilarProduct = async (pid, cid) => {
+  // GET RELATED PRODUCTS
+  const getSimilarProducts = async (pid, cid) => {
     try {
       const { data } = await axios.get(
         `${process.env.REACT_APP_API}/api/v1/product/related-product/${pid}/${cid}`
       );
-      setRelatedProducts(data?.products);
+      setRelatedProducts(data?.products || []);
     } catch (error) {
       console.log(error);
     }
   };
 
+  useEffect(() => {
+    if (params?.slug) getProduct();
+  }, [params?.slug]);
+
+  useEffect(() => {
+    if (product?._id && product?.category?._id) {
+      getSimilarProducts(product._id, product.category._id);
+    }
+  }, [product]);
+
+  if (!product) {
+    return (
+      <Layout>
+        <div className="min-h-screen flex items-center justify-center">
+          <p className="text-gray-500">Loading...</p>
+        </div>
+      </Layout>
+    );
+  }
+
   return (
     <Layout>
-      <div className="container py-4">
-        <div
-          className="row shadow-lg rounded-4 p-4 mb-5"
-          style={{
-            background: "rgba(255,255,255,0.05)",
-            backdropFilter: "blur(10px)",
-            color: "#EAF4FF",
-          }}
-        >
-          <div className="col-md-6 text-center">
-            <img
-              src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${product._id}`}
-              alt={product.name}
-              style={{
-                height: "300px",
-                width: "100%",
-                objectFit: "contain",
-              }}
-            />
+      <div className="min-h-screen bg-[#f6f1e9] px-6 md:px-16 py-12">
+
+        {/* Breadcrumb */}
+        <div className="text-xs text-gray-500 mb-10 tracking-wide">
+          Home / Category / Product
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-20 items-start">
+
+          {/* LEFT SIDE */}
+          <div className="flex gap-4">
+
+            {/* thumbnails */}
+            <div className="flex flex-col gap-4">
+              {[1, 2, 3].map((_, i) => (
+                <img
+                  key={i}
+                  src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${product?._id}`}
+                  className="w-16 h-20 object-cover cursor-pointer border border-gray-200 hover:border-black transition"
+                  alt=""
+                />
+              ))}
+            </div>
+
+            {/* main image */}
+            <div className="bg-white p-6 w-full flex items-center justify-center">
+              <img
+                src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${product?._id}`}
+                className="w-[350px] object-contain transition-transform duration-500 hover:scale-105"
+                alt=""
+              />
+            </div>
+
           </div>
 
-          <div className="col-md-6 d-flex flex-column justify-content-center">
-            <h2 style={{ color: "#E6C07B" }}>{product.name}</h2>
+          {/* RIGHT SIDE */}
+          <div className="max-w-md">
 
-            <p>{product.description}</p>
+            <h1 className="text-4xl font-semibold tracking-tight mb-3">
+              {product?.name}
+            </h1>
 
-            <h4 style={{ color: "#E6C07B" }}>$ {product.price}</h4>
+            <p className="text-sm text-gray-400 mb-6 tracking-wide">
+              In stock
+            </p>
 
-            <p>Category: {product?.category?.name}</p>
+            <h2 className="text-2xl font-medium mb-8">
+              ₹ {product?.price}
+            </h2>
 
+            <p className="text-gray-600 text-sm leading-relaxed mb-10">
+              {product?.description}
+            </p>
+
+          
+            {/* BUTTON */}
             <button
-              className="btn mt-3"
-              style={{
-                background: "linear-gradient(90deg, #1A3D63, #4A7FA7)",
-                color: "white",
-              }}
+              className="w-full border border-black py-4 text-sm tracking-widest hover:bg-black hover:text-white transition duration-300"
               onClick={() => {
                 setCart([...cart, product]);
-                localStorage.setItem(
-                  "cart",
-                  JSON.stringify([...cart, product])
-                );
+                localStorage.setItem("cart", JSON.stringify([...cart, product]));
                 toast.success("Added to cart");
               }}
             >
-              Add to Cart
+              ADD TO CART
             </button>
+
           </div>
+
         </div>
 
-        <h4 className="mb-3" style={{ color: "#E6C07B" }}>
-          Related Products
-        </h4>
+        {/* RELATED PRODUCTS */}
+        <div className="mt-24">
 
-        {relatedProducts.length < 1 && (
-          <p style={{ color: "#cbd5e1" }}>No Similar Products found</p>
-        )}
+          <h2 className="text-3xl font-semibold tracking-tight mb-10">
+            You may also like
+          </h2>
 
-        <div className="d-flex flex-wrap">
-          {relatedProducts?.map((p) => (
-            <div
-              key={p._id}
-              className="card m-3 shadow-lg"
-              style={{
-                width: "18rem",
-                height: "400px",
-                background: "rgba(255,255,255,0.05)",
-                backdropFilter: "blur(10px)",
-                color: "#EAF4FF",
-                borderRadius: "15px",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-              }}
-            >
-              <img
-                src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${p._id}`}
-                alt={p.name}
-                style={{
-                  height: "180px",
-                  width: "100%",
-                  objectFit: "contain",
-                  padding: "10px",
-                }}
-              />
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
 
-              <div className="card-body d-flex flex-column justify-content-between">
-                <div>
-                  <h5>{p.name}</h5>
-                  <p style={{ fontSize: "14px", height: "40px", overflow: "hidden" }}>
-                    {p.description?.substring(0, 40)}...
-                  </p>
-                  <p style={{ color: "#E6C07B" }}>$ {p.price}</p>
+            {relatedProducts?.length > 0 ? (
+              relatedProducts.map((p) => (
+                <div
+                  key={p._id}
+                  className="group cursor-pointer"
+                  onClick={() => navigate(`/product/${p.slug}`)}
+                >
+                  <div className="overflow-hidden">
+                    <img
+                      src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${p._id}`}
+                      className="w-full h-[220px] object-cover transition-transform duration-300 group-hover:scale-105"
+                      alt=""
+                    />
+                  </div>
+
+                  <div className="mt-3 text-sm">
+                    <p className="font-medium">{p.name}</p>
+                    <p className="text-gray-500">₹ {p.price}</p>
+                  </div>
                 </div>
+              ))
+            ) : (
+              <p className="text-gray-500 text-sm">
+                No related products found
+              </p>
+            )}
 
-                <div className="d-flex justify-content-between">
-                  <button
-                    className="btn btn-sm"
-                    style={{
-                      background: "linear-gradient(90deg, #1A3D63, #4A7FA7)",
-                      color: "white",
-                    }}
-                    onClick={() => navigate(`/product/${p.slug}`)}
-                  >
-                    Details
-                  </button>
+          </div>
 
-                  <button
-                    className="btn btn-sm"
-                    style={{
-                      background: "#0A1931",
-                      border: "1px solid #4A7FA7",
-                      color: "white",
-                    }}
-                    onClick={() => {
-                      setCart([...cart, p]);
-                      localStorage.setItem(
-                        "cart",
-                        JSON.stringify([...cart, p])
-                      );
-                      toast.success("Added to cart");
-                    }}
-                  >
-                    Add
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
         </div>
+
       </div>
     </Layout>
   );

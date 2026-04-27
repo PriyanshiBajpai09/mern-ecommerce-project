@@ -9,18 +9,27 @@ const AuthProvider = ({ children }) => {
     token: "",
   });
 
-  axios.defaults.headers.common["Authorization"] = auth?.token;
+  // 🔥 LOAD FROM LOCAL STORAGE (FIXED)
   useEffect(() => {
     const data = localStorage.getItem("auth");
     if (data) {
       const parseData = JSON.parse(data);
       setAuth({
-        ...auth,
         user: parseData.user,
         token: parseData.token,
       });
     }
   }, []);
+
+  // 🔥 HANDLE AXIOS HEADER PROPERLY
+  useEffect(() => {
+    if (auth?.token) {
+      axios.defaults.headers.common["Authorization"] = auth.token;
+    } else {
+      delete axios.defaults.headers.common["Authorization"]; // 🔥 IMPORTANT
+    }
+  }, [auth?.token]);
+
   return (
     <AuthContext.Provider value={[auth, setAuth]}>
       {children}

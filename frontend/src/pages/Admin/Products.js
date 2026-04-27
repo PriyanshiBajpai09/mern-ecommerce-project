@@ -15,8 +15,7 @@ const Products = () => {
       );
       setProducts(data.products);
     } catch (error) {
-      console.log(error);
-      toast.error("Something Went Wrong");
+      toast.error("Something went wrong");
     }
   };
 
@@ -26,92 +25,75 @@ const Products = () => {
 
   return (
     <Layout>
-      <div
-        className="container-fluid py-4"
-        style={{
-          background: "linear-gradient(135deg, #0A1931, #1A3D63)",
-          minHeight: "100vh",
-        }}
-      >
-        <div className="row">
+      <div className="min-h-screen pt-[90px] flex justify-center">
 
-          <div className="col-md-3 mb-3">
-            <div
-              style={{
-                background: "rgba(74,127,167,0.15)",
-                backdropFilter: "blur(10px)",
-                borderRadius: "15px",
-                padding: "20px",
-                color: "#EAF4FF",
-              }}
-            >
-              <AdminMenu />
+        <div className="w-full max-w-6xl px-6 py-10">
+
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+
+            {/* LEFT MENU */}
+            <div>
+              <div className="bg-white border rounded-xl p-5 shadow-sm sticky top-[100px]">
+                <AdminMenu />
+              </div>
             </div>
-          </div>
 
-          <div className="col-md-9">
+            {/* RIGHT CONTENT */}
+            <div className="md:col-span-3 space-y-6">
 
-            <h2 className="text-center home-title">All Products</h2>
+              <h2 className="text-xl font-semibold">
+                All Products
+              </h2>
 
-            <div className="d-flex flex-wrap justify-content-center">
+              {/* GRID */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
-              {products?.map((p) => (
-                <Link
-                  key={p._id}
-                  to={`/dashboard/admin/product/${p.slug}`}
-                  style={{ textDecoration: "none" }}
-                >
-                  <div
-                    className="card m-3 shadow-lg"
-                    style={{
-                      width: "18rem",
-                      height: "400px",
-                      background: "rgba(255,255,255,0.05)",
-                      backdropFilter: "blur(10px)",
-                      color: "#EAF4FF",
-                      borderRadius: "15px",
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "space-between",
-                    }}
+                {products?.map((p) => (
+                  <Link
+                    key={p._id}
+                    to={`/dashboard/admin/product/${p.slug}`}
+                    className="group"
                   >
-                    <img
-                      src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${p._id}`}
-                      alt={p.name}
-                      style={{
-                        height: "180px",
-                        width: "100%",
-                        objectFit: "contain",
-                        padding: "10px",
-                      }}
-                    />
+                    <div className="bg-white border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition">
 
-                    <div className="card-body d-flex flex-column justify-content-between">
-                      <div>
-                        <h5>{p.name}</h5>
-
-                        <p
-                          style={{
-                            fontSize: "14px",
-                            height: "40px",
-                            overflow: "hidden",
-                          }}
-                        >
-                          {p.description.substring(0, 40)}...
-                        </p>
-
-                        <p style={{ color: "#E6C07B" }}>
-                          $ {p.price}
-                        </p>
+                      {/* IMAGE */}
+                      <div className="overflow-hidden">
+                        <img
+                          src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${p._id}`}
+                          alt={p.name}
+                          className="w-full h-[200px] object-contain p-4 group-hover:scale-105 transition"
+                        />
                       </div>
+
+                      {/* CONTENT */}
+                      <div className="p-4">
+
+                        <h3 className="text-sm font-medium mb-1 line-clamp-1">
+                          {p.name}
+                        </h3>
+
+                        <p className="text-xs text-gray-500 mb-2 line-clamp-2">
+                          {p.description}
+                        </p>
+
+                        <p className="font-semibold text-sm">
+                          ₹ {p.price}
+                        </p>
+
+                      </div>
+
                     </div>
-                  </div>
-                </Link>
-              ))}
+                  </Link>
+                ))}
+
+              </div>
 
             </div>
+
           </div>
+
         </div>
+
       </div>
     </Layout>
   );

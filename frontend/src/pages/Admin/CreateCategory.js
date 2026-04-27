@@ -86,114 +86,106 @@ const CreateCategory = () => {
 
   return (
     <Layout>
-      <div
-        className="container-fluid py-4"
-        style={{
-          background: "linear-gradient(135deg, #0A1931, #1A3D63)",
-          minHeight: "100vh",
-        }}
-      >
-        <div className="row">
+      <div className="min-h-screen pt-[90px] flex justify-center">
 
-          <div className="col-md-3 mb-3">
-            <div
-              style={{
-                background: "rgba(74,127,167,0.15)",
-                backdropFilter: "blur(10px)",
-                borderRadius: "15px",
-                padding: "20px",
-                color: "#EAF4FF",
-              }}
-            >
-              <AdminMenu />
+        <div className="w-full max-w-6xl px-6 py-10">
+
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+
+            {/* LEFT MENU */}
+            <div>
+              <div className="bg-white border rounded-xl p-5 shadow-sm sticky top-[100px]">
+                <AdminMenu />
+              </div>
             </div>
+
+            {/* RIGHT CONTENT */}
+            <div className="md:col-span-3 space-y-6">
+
+              <h2 className="text-xl font-semibold">
+                Manage Categories
+              </h2>
+
+              {/* CREATE FORM */}
+              <div className="bg-white border rounded-xl p-5 shadow-sm">
+                <CategoryForm
+                  handleSubmit={handleSubmit}
+                  value={name}
+                  setValue={setName}
+                />
+              </div>
+
+              {/* TABLE */}
+              <div className="bg-white border rounded-xl p-5 shadow-sm">
+
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+
+                    <thead className="border-b text-left">
+                      <tr>
+                        <th className="py-2">Name</th>
+                        <th className="py-2">Actions</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      {categories?.map((c) => (
+                        <tr key={c._id} className="border-b">
+
+                          <td className="py-3">{c.name}</td>
+
+                          <td className="py-3 flex gap-2">
+
+                            <button
+                              onClick={() => {
+                                setVisible(true);
+                                setUpdatedName(c.name);
+                                setSelected(c);
+                              }}
+                              className="px-3 py-1 text-xs border rounded-md hover:bg-black hover:text-white transition"
+                            >
+                              Edit
+                            </button>
+
+                            <button
+                              onClick={() => handleDelete(c._id)}
+                              className="px-3 py-1 text-xs bg-black text-white rounded-md hover:bg-gray-800 transition"
+                            >
+                              Delete
+                            </button>
+
+                          </td>
+
+                        </tr>
+                      ))}
+                    </tbody>
+
+                  </table>
+                </div>
+
+              </div>
+
+            </div>
+
           </div>
 
-          <div className="col-md-9">
-
-            <h2 style={{ color: "#E6C07B", marginBottom: "20px" }}>
-              Manage Categories
-            </h2>
-
-            <div
-              style={{
-                background: "rgba(255,255,255,0.05)",
-                padding: "20px",
-                borderRadius: "15px",
-                marginBottom: "20px",
-              }}
-            >
-              <CategoryForm
-                handleSubmit={handleSubmit}
-                value={name}
-                setValue={setName}
-              />
-            </div>
-
-            <div
-              style={{
-                background: "rgba(255,255,255,0.05)",
-                padding: "20px",
-                borderRadius: "15px",
-                color: "#F6FAFD",
-              }}
-            >
-              <table className="table text-light">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {categories?.map((c) => (
-                    <tr key={c._id}>
-                      <td>{c.name}</td>
-
-                      <td>
-                        <button
-                          className="btn btn-sm me-2"
-                          style={{ background: "#4A7FA7", color: "white" }}
-                          onClick={() => {
-                            setVisible(true);
-                            setUpdatedName(c.name);
-                            setSelected(c);
-                          }}
-                        >
-                          Edit
-                        </button>
-
-                        <button
-                          className="btn btn-sm"
-                          style={{ background: "#E6C07B", color: "black" }}
-                          onClick={() => handleDelete(c._id)}
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-
-              </table>
-            </div>
-
-            <Modal
-              open={visible}
-              onCancel={() => setVisible(false)}
-              footer={null}
-            >
-              <CategoryForm
-                value={updatedName}
-                setValue={setUpdatedName}
-                handleSubmit={handleUpdate}
-              />
-            </Modal>
-
-          </div>
         </div>
+
       </div>
+
+      {/* MODAL */}
+      <Modal
+        open={visible}
+        onCancel={() => setVisible(false)}
+        footer={null}
+      >
+        <CategoryForm
+          value={updatedName}
+          setValue={setUpdatedName}
+          handleSubmit={handleUpdate}
+        />
+      </Modal>
+
     </Layout>
   );
 };

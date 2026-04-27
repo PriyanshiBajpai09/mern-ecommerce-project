@@ -13,19 +13,17 @@ const CreateProduct = () => {
   const [quantity, setQuantity] = useState("");
   const [category, setCategory] = useState("");
   const [shipping, setShipping] = useState("");
-  const [photo, setPhoto] = useState("");
+  const [photo, setPhoto] = useState(null);
 
+  // GET CATEGORIES
   const getAllCategory = async () => {
     try {
       const { data } = await axios.get(
         `${process.env.REACT_APP_API}/api/v1/category/get-category`
       );
-      if (data?.success) {
-        setCategories(data?.category);
-      }
+      if (data?.success) setCategories(data?.category);
     } catch (error) {
-      console.log(error);
-      toast.error("Error in getting categories");
+      toast.error("Error fetching categories");
     }
   };
 
@@ -33,6 +31,7 @@ const CreateProduct = () => {
     getAllCategory();
   }, []);
 
+  // CREATE PRODUCT
   const handleCreate = async (e) => {
     e.preventDefault();
     try {
@@ -56,138 +55,135 @@ const CreateProduct = () => {
         toast.error(data?.message);
       }
     } catch (error) {
-      console.log(error);
       toast.error("Something went wrong");
     }
   };
 
   return (
     <Layout>
-      <div
-        className="container-fluid py-4"
-        style={{
-          background: "linear-gradient(135deg, #0A1931, #1A3D63)",
-          minHeight: "100vh",
-        }}
-      >
-        <div className="row">
-          <div className="col-md-3 mb-3">
-            <div
-              style={{
-                background: "rgba(74,127,167,0.15)",
-                backdropFilter: "blur(10px)",
-                borderRadius: "15px",
-                padding: "20px",
-                color: "#EAF4FF",
-              }}
-            >
-              <AdminMenu />
+      <div className="min-h-screen pt-[90px] flex justify-center">
+
+        <div className="w-full max-w-6xl px-6 py-10">
+
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+
+            {/* LEFT MENU */}
+            <div>
+              <div className="bg-white border rounded-xl p-5 shadow-sm sticky top-[100px]">
+                <AdminMenu />
+              </div>
             </div>
-          </div>
 
-          <div className="col-md-9">
-            <h2 style={{ color: "#E6C07B", marginBottom: "20px" }}>
-              Create Product
-            </h2>
+            {/* RIGHT CONTENT */}
+            <div className="md:col-span-3 space-y-6">
 
-            <form onSubmit={handleCreate}>
-              <select
-                className="form-select mb-3 custom-select-dark"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                style={{
-                  background: "rgba(255,255,255,0.08)",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "10px",
-                }}
+              <h2 className="text-xl font-semibold">
+                Create Product
+              </h2>
+
+              <form
+                onSubmit={handleCreate}
+                className="bg-white border rounded-xl p-6 shadow-sm space-y-4"
               >
-                <option value="">Select Category</option>
-                {categories?.map((c) => (
-                  <option key={c._id} value={c._id}>
-                    {c.name}
-                  </option>
-                ))}
-              </select>
 
-              <div className="mb-3">
-                <label className="btn btn-secondary w-100">
-                  {photo ? photo.name : "Upload Photo"}
+                {/* CATEGORY */}
+                <select
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  className="w-full border px-4 py-2.5 rounded-md text-sm outline-none focus:ring-1 focus:ring-black"
+                >
+                  <option value="">Select Category</option>
+                  {categories?.map((c) => (
+                    <option key={c._id} value={c._id}>
+                      {c.name}
+                    </option>
+                  ))}
+                </select>
+
+                {/* IMAGE UPLOAD */}
+                <div>
+                  <label className="block text-sm mb-1">
+                    Upload Image
+                  </label>
+
                   <input
                     type="file"
-                    name="photo"
                     accept="image/*"
-                    hidden
                     onChange={(e) => setPhoto(e.target.files[0])}
+                    className="w-full text-sm"
                   />
-                </label>
-              </div>
 
-              <input
-                type="text"
-                placeholder="Product Name"
-                className="form-control mb-3"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                style={{ background: "rgba(255,255,255,0.08)", color: "white" }}
-              />
+                  {photo && (
+                    <img
+                      src={URL.createObjectURL(photo)}
+                      alt="preview"
+                      className="mt-3 h-32 object-contain border p-2 rounded-md"
+                    />
+                  )}
+                </div>
 
-              <textarea
-                placeholder="Description"
-                className="form-control mb-3"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                style={{ background: "rgba(255,255,255,0.08)", color: "white" }}
-              />
+                {/* NAME */}
+                <input
+                  type="text"
+                  placeholder="Product Name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full border px-4 py-2.5 rounded-md text-sm outline-none focus:ring-1 focus:ring-black"
+                />
 
-              <input
-                type="number"
-                placeholder="Price"
-                className="form-control mb-3"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-                style={{ background: "rgba(255,255,255,0.08)", color: "white" }}
-              />
+                {/* DESCRIPTION */}
+                <textarea
+                  placeholder="Description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  className="w-full border px-4 py-2.5 rounded-md text-sm outline-none focus:ring-1 focus:ring-black"
+                />
 
-              <input
-                type="number"
-                placeholder="Quantity"
-                className="form-control mb-3"
-                value={quantity}
-                onChange={(e) => setQuantity(e.target.value)}
-                style={{ background: "rgba(255,255,255,0.08)", color: "white" }}
-              />
+                {/* PRICE */}
+                <input
+                  type="number"
+                  placeholder="Price"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  className="w-full border px-4 py-2.5 rounded-md text-sm outline-none focus:ring-1 focus:ring-black"
+                />
 
-              <select
-                className="form-select mb-3 custom-select-dark"
-                value={shipping}
-                onChange={(e) => setShipping(e.target.value)}
-                style={{
-                  background: "rgba(255,255,255,0.08)",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "10px",
-                }}
-              >
-                <option value="">Shipping?</option>
-                <option value="0">No</option>
-                <option value="1">Yes</option>
-              </select>
+                {/* QUANTITY */}
+                <input
+                  type="number"
+                  placeholder="Quantity"
+                  value={quantity}
+                  onChange={(e) => setQuantity(e.target.value)}
+                  className="w-full border px-4 py-2.5 rounded-md text-sm outline-none focus:ring-1 focus:ring-black"
+                />
 
-              <button
-                type="submit"
-                className="btn w-100"
-                style={{
-                  background: "linear-gradient(90deg, #1A3D63, #4A7FA7)",
-                  color: "white",
-                  borderRadius: "10px",
-                }}
-              >
-                Create Product
-              </button>
-            </form>
+                {/* SHIPPING */}
+                <select
+                  value={shipping}
+                  onChange={(e) => setShipping(e.target.value)}
+                  className="w-full border px-4 py-2.5 rounded-md text-sm outline-none focus:ring-1 focus:ring-black"
+                >
+                  <option value="">Shipping?</option>
+                  <option value="0">No</option>
+                  <option value="1">Yes</option>
+                </select>
+
+                {/* BUTTON */}
+                <button
+                  type="submit"
+                  className="w-full bg-black text-white py-2.5 text-sm rounded-md hover:bg-gray-800 transition"
+                >
+                  Create Product
+                </button>
+
+              </form>
+
+            </div>
+
           </div>
+
         </div>
+
       </div>
     </Layout>
   );
