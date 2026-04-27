@@ -9,6 +9,10 @@ const Users = () => {
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
+  const [answer, setAnswer] = useState("");
 
   // GET USERS
   const getUsers = async () => {
@@ -43,25 +47,42 @@ const Users = () => {
     }
   };
 
-  // ADD USER (basic)
-  const handleAddUser = (e) => {
+  // ✅ ADD USER (REAL BACKEND)
+  const handleAddUser = async (e) => {
     e.preventDefault();
 
-    if (!name || !email) {
+    if (!name || !email || !password || !phone || !address || !answer) {
       return toast.error("Fill all fields");
     }
 
-    const newUser = {
-      _id: Date.now(),
-      name,
-      email,
-    };
+    try {
+      const { data } = await axios.post(
+        `${process.env.REACT_APP_API}/api/v1/auth/register`,
+        {
+          name,
+          email,
+          password,
+          phone,
+          address,
+          answer,
+        }
+      );
 
-    setUsers([...users, newUser]);
-    setName("");
-    setEmail("");
+      if (data.success) {
+        toast.success("User Created Successfully");
+        getUsers();
 
-    toast.success("User added (frontend only)");
+        // clear fields
+        setName("");
+        setEmail("");
+        setPassword("");
+        setPhone("");
+        setAddress("");
+        setAnswer("");
+      }
+    } catch (error) {
+      toast.error("Error creating user");
+    }
   };
 
   return (
@@ -85,17 +106,17 @@ const Users = () => {
                 Manage Users
               </h2>
 
-              {/* ADD USER */}
+              {/* ADD USER FORM */}
               <form
                 onSubmit={handleAddUser}
-                className="bg-white border rounded-xl p-5 shadow-sm flex gap-3"
+                className="bg-white border rounded-xl p-5 shadow-sm grid grid-cols-1 md:grid-cols-2 gap-3"
               >
                 <input
                   type="text"
                   placeholder="Name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="flex-1 border px-4 py-2 rounded-md text-sm"
+                  className="border px-4 py-2 rounded-md text-sm"
                 />
 
                 <input
@@ -103,11 +124,43 @@ const Users = () => {
                   placeholder="Email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="flex-1 border px-4 py-2 rounded-md text-sm"
+                  className="border px-4 py-2 rounded-md text-sm"
                 />
 
-                <button className="bg-black text-white px-5 rounded-md">
-                  Add
+                <input
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="border px-4 py-2 rounded-md text-sm"
+                />
+
+                <input
+                  type="text"
+                  placeholder="Phone"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  className="border px-4 py-2 rounded-md text-sm"
+                />
+
+                <input
+                  type="text"
+                  placeholder="Address"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  className="border px-4 py-2 rounded-md text-sm"
+                />
+
+                <input
+                  type="text"
+                  placeholder="Answer"
+                  value={answer}
+                  onChange={(e) => setAnswer(e.target.value)}
+                  className="border px-4 py-2 rounded-md text-sm"
+                />
+
+                <button className="bg-black text-white py-2 rounded-md col-span-1 md:col-span-2">
+                  Add User
                 </button>
               </form>
 
@@ -120,6 +173,7 @@ const Users = () => {
                     <tr>
                       <th className="py-2">Name</th>
                       <th className="py-2">Email</th>
+                      <th className="py-2">Role</th>
                       <th className="py-2">Action</th>
                     </tr>
                   </thead>
@@ -130,6 +184,9 @@ const Users = () => {
 
                         <td className="py-3">{u.name}</td>
                         <td className="py-3">{u.email}</td>
+                        <td className="py-3">
+                          {u.role === 1 ? "Admin" : "User"}
+                        </td>
 
                         <td className="py-3">
                           <button

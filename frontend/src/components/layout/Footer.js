@@ -9,7 +9,7 @@ const Footer = () => {
 
         {/* TITLE */}
         <h3 className="text-lg font-semibold tracking-wide">
-          TechStore
+          E-Store
         </h3>
 
         {/* DESCRIPTION */}

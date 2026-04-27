@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../context/auth";
-import { Outlet, Navigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import axios from "axios";
 import Spinner from "../Spinner";
 
 export default function PrivateRoute() {
-  const [ok, setOk] = useState(false);
-  const [auth] = useAuth();
+  const [ok, setOk] = useState(null); // 🔥 null initial
+  const [auth, , loading] = useAuth();
 
   useEffect(() => {
     const authCheck = async () => {
@@ -27,10 +27,10 @@ export default function PrivateRoute() {
     }
   }, [auth?.token]);
 
-  // 🔥 MAIN FIX
-  if (!auth?.token) {
-    return <Navigate to="/login" replace />;
-  }
+  // 🔥 sabse important
+  if (loading) return <Spinner />;
+
+  if (ok === null) return <Spinner />;
 
   return ok ? <Outlet /> : <Spinner />;
 }

@@ -25,7 +25,7 @@ const ProductDetails = () => {
     }
   };
 
-  // GET RELATED PRODUCTS
+  // RELATED PRODUCTS
   const getSimilarProducts = async (pid, cid) => {
     try {
       const { data } = await axios.get(
@@ -59,115 +59,119 @@ const ProductDetails = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-[#f6f1e9] px-6 md:px-16 py-12">
+      <div className="min-h-screen pt-[90px] relative">
 
-        {/* Breadcrumb */}
-        <div className="text-xs text-gray-500 mb-10 tracking-wide">
-          Home / Category / Product
+        {/* 🔥 FIXED BLUR BACKGROUND */}
+        <div className="fixed inset-0 -z-10">
+          <img
+            src="https://images.unsplash.com/photo-1523275335684-37898b6baf30"
+            className="w-full h-full object-cover blur-md opacity-30"
+            alt=""
+          />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-20 items-start">
+        {/* CONTENT */}
+        <div className="flex justify-center">
+          <div className="w-full max-w-6xl px-6 py-10">
 
-          {/* LEFT SIDE */}
-          <div className="flex gap-4">
+            {/* PRODUCT CARD */}
+            <div className="bg-white/80 backdrop-blur-md rounded-xl border shadow-md p-6 md:p-10">
 
-            {/* thumbnails */}
-            <div className="flex flex-col gap-4">
-              {[1, 2, 3].map((_, i) => (
-                <img
-                  key={i}
-                  src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${product?._id}`}
-                  className="w-16 h-20 object-cover cursor-pointer border border-gray-200 hover:border-black transition"
-                  alt=""
-                />
-              ))}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+
+                {/* IMAGE */}
+                <div className="flex justify-center items-center">
+                  <img
+                    src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${product._id}`}
+                    className="w-full max-w-[350px] object-contain"
+                    alt=""
+                  />
+                </div>
+
+                {/* DETAILS */}
+                <div className="flex flex-col justify-center">
+
+                  <h1 className="text-2xl md:text-3xl font-semibold mb-2">
+                    {product.name}
+                  </h1>
+
+                  <p className="text-sm text-gray-400 mb-4">
+                    In stock
+                  </p>
+
+                  <p className="text-lg font-semibold mb-6">
+                    ₹ {product.price}
+                  </p>
+
+                  <p className="text-sm text-gray-600 mb-8">
+                    {product.description}
+                  </p>
+
+                  <button
+                    className="bg-black text-white py-3 rounded-md hover:bg-gray-800 transition"
+                    onClick={() => {
+                      const already = cart.find(
+                        (item) => item._id === product._id
+                      );
+
+                      if (already) {
+                        toast("Already in cart");
+                      } else {
+                        setCart([...cart, product]);
+                        localStorage.setItem(
+                          "cart",
+                          JSON.stringify([...cart, product])
+                        );
+                        toast.success("Added to cart");
+                      }
+                    }}
+                  >
+                    ADD TO CART
+                  </button>
+
+                </div>
+
+              </div>
+
             </div>
 
-            {/* main image */}
-            <div className="bg-white p-6 w-full flex items-center justify-center">
-              <img
-                src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${product?._id}`}
-                className="w-[350px] object-contain transition-transform duration-500 hover:scale-105"
-                alt=""
-              />
-            </div>
+            {/* RELATED PRODUCTS */}
+            <div className="mt-14">
 
-          </div>
+              <h2 className="text-xl font-semibold mb-6 text-center">
+                You may also like
+              </h2>
 
-          {/* RIGHT SIDE */}
-          <div className="max-w-md">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
 
-            <h1 className="text-4xl font-semibold tracking-tight mb-3">
-              {product?.name}
-            </h1>
-
-            <p className="text-sm text-gray-400 mb-6 tracking-wide">
-              In stock
-            </p>
-
-            <h2 className="text-2xl font-medium mb-8">
-              ₹ {product?.price}
-            </h2>
-
-            <p className="text-gray-600 text-sm leading-relaxed mb-10">
-              {product?.description}
-            </p>
-
-          
-            {/* BUTTON */}
-            <button
-              className="w-full border border-black py-4 text-sm tracking-widest hover:bg-black hover:text-white transition duration-300"
-              onClick={() => {
-                setCart([...cart, product]);
-                localStorage.setItem("cart", JSON.stringify([...cart, product]));
-                toast.success("Added to cart");
-              }}
-            >
-              ADD TO CART
-            </button>
-
-          </div>
-
-        </div>
-
-        {/* RELATED PRODUCTS */}
-        <div className="mt-24">
-
-          <h2 className="text-3xl font-semibold tracking-tight mb-10">
-            You may also like
-          </h2>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
-
-            {relatedProducts?.length > 0 ? (
-              relatedProducts.map((p) => (
-                <div
-                  key={p._id}
-                  className="group cursor-pointer"
-                  onClick={() => navigate(`/product/${p.slug}`)}
-                >
-                  <div className="overflow-hidden">
+                {relatedProducts?.map((p) => (
+                  <div
+                    key={p._id}
+                    className="bg-white/80 backdrop-blur-md border rounded-xl p-4 hover:shadow-md transition cursor-pointer"
+                    onClick={() => navigate(`/product/${p.slug}`)}
+                  >
                     <img
                       src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${p._id}`}
-                      className="w-full h-[220px] object-cover transition-transform duration-300 group-hover:scale-105"
+                      className="w-full h-[180px] object-cover rounded mb-3"
                       alt=""
                     />
-                  </div>
 
-                  <div className="mt-3 text-sm">
-                    <p className="font-medium">{p.name}</p>
-                    <p className="text-gray-500">₹ {p.price}</p>
+                    <h3 className="text-sm font-medium line-clamp-1">
+                      {p.name}
+                    </h3>
+
+                    <p className="text-gray-500 text-sm">
+                      ₹ {p.price}
+                    </p>
+
                   </div>
-                </div>
-              ))
-            ) : (
-              <p className="text-gray-500 text-sm">
-                No related products found
-              </p>
-            )}
+                ))}
+
+              </div>
+
+            </div>
 
           </div>
-
         </div>
 
       </div>

@@ -9,29 +9,28 @@ const AuthProvider = ({ children }) => {
     token: "",
   });
 
-  // 🔥 LOAD FROM LOCAL STORAGE (FIXED)
+  const [loading, setLoading] = useState(true); // 🔥 ADD
+
   useEffect(() => {
     const data = localStorage.getItem("auth");
+
     if (data) {
       const parseData = JSON.parse(data);
+
       setAuth({
         user: parseData.user,
         token: parseData.token,
       });
+
+      axios.defaults.headers.common["Authorization"] =
+        `Bearer ${parseData.token}`;
     }
+
+    setLoading(false); // 🔥 IMPORTANT
   }, []);
 
-  // 🔥 HANDLE AXIOS HEADER PROPERLY
-  useEffect(() => {
-    if (auth?.token) {
-      axios.defaults.headers.common["Authorization"] = auth.token;
-    } else {
-      delete axios.defaults.headers.common["Authorization"]; // 🔥 IMPORTANT
-    }
-  }, [auth?.token]);
-
   return (
-    <AuthContext.Provider value={[auth, setAuth]}>
+    <AuthContext.Provider value={[auth, setAuth, loading]}>
       {children}
     </AuthContext.Provider>
   );

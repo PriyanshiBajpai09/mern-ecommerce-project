@@ -102,133 +102,128 @@ const UpdateProduct = () => {
 
   return (
     <Layout>
-      <div
-        className="container-fluid py-4"
-        style={{
-          background: "linear-gradient(135deg, #0A1931, #1A3D63)",
-          minHeight: "100vh",
-        }}
-      >
-        <div className="row">
+      <div className="min-h-screen pt-[90px] flex justify-center">
+  <div className="w-full max-w-6xl px-6 py-10">
 
-          <div className="col-md-3 mb-3">
-            <div
-              style={{
-                background: "rgba(74,127,167,0.15)",
-                backdropFilter: "blur(10px)",
-                borderRadius: "15px",
-                padding: "20px",
-                color: "#EAF4FF",
-              }}
-            >
-              <AdminMenu />
-            </div>
-          </div>
+    <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
 
-          <div className="col-md-9">
-
-            <h2 style={{ color: "#E6C07B", marginBottom: "20px" }}>
-              Update Product
-            </h2>
-
-            <form style={{ maxWidth: "600px" }}>
-
-              <select
-                className="form-select mb-3 custom-select-dark"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-              >
-                <option value="">Select Category</option>
-                {categories.map((c) => (
-                  <option key={c._id} value={c._id}>
-                    {c.name}
-                  </option>
-                ))}
-              </select>
-
-              <div className="mb-3">
-                <label className="btn btn-secondary w-100">
-                  {photo ? photo.name : "Upload Photo"}
-                  <input
-                    type="file"
-                    hidden
-                    onChange={(e) => setPhoto(e.target.files[0])}
-                  />
-                </label>
-              </div>
-
-              <div className="mb-3 text-center">
-                <img
-                  src={
-                    photo
-                      ? URL.createObjectURL(photo)
-                      : `${process.env.REACT_APP_API}/api/v1/product/product-photo/${id}`
-                  }
-                  height="200"
-                  style={{ borderRadius: "10px" }}
-                  alt="product"
-                />
-              </div>
-
-              <input
-                type="text"
-                className="form-control mb-3"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Product Name"
-              />
-
-              <textarea
-                className="form-control mb-3"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="Description"
-              />
-
-              <input
-                type="number"
-                className="form-control mb-3"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-                placeholder="Price"
-              />
-
-              <input
-                type="number"
-                className="form-control mb-3"
-                value={quantity}
-                onChange={(e) => setQuantity(e.target.value)}
-                placeholder="Quantity"
-              />
-
-              <select
-                className="form-select mb-3 custom-select-dark"
-                value={shipping}
-                onChange={(e) => setShipping(e.target.value)}
-              >
-                <option value="">Shipping?</option>
-                <option value="0">No</option>
-                <option value="1">Yes</option>
-              </select>
-
-              <button
-                className="btn w-100 mb-2"
-                onClick={handleUpdate}
-              >
-                UPDATE PRODUCT
-              </button>
-
-              <button
-                className="btn w-100"
-                onClick={handleDelete}
-              >
-                DELETE PRODUCT
-              </button>
-
-            </form>
-          </div>
+      {/* LEFT MENU */}
+      <div>
+        <div className="bg-white border rounded-xl p-5 shadow-sm sticky top-[100px]">
+          <AdminMenu />
         </div>
       </div>
+
+      {/* RIGHT */}
+      <div className="md:col-span-3 space-y-6">
+
+        <h2 className="text-xl font-semibold">
+          Update Product
+        </h2>
+
+        <form className="bg-white border rounded-xl p-6 shadow-sm space-y-4 max-w-lg">
+
+          {/* CATEGORY */}
+          <select
+            className="w-full border px-4 py-2 rounded-md text-sm"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          >
+            <option value="">Select Category</option>
+            {categories.map((c) => (
+              <option key={c._id} value={c._id}>
+                {c.name}
+              </option>
+            ))}
+          </select>
+
+          {/* IMAGE UPLOAD */}
+          <label className="w-full border px-4 py-2 rounded-md text-sm cursor-pointer text-center bg-gray-50 hover:bg-gray-100">
+            {photo ? photo.name : "Upload Photo"}
+            <input
+              type="file"
+              hidden
+              onChange={(e) => setPhoto(e.target.files[0])}
+            />
+          </label>
+
+          {/* IMAGE PREVIEW */}
+          <div className="flex justify-center">
+            <img
+              src={
+                photo
+                  ? URL.createObjectURL(photo)
+                  : `${process.env.REACT_APP_API}/api/v1/product/product-photo/${id}`
+              }
+              className="h-[180px] object-contain rounded-md"
+              alt="product"
+            />
+          </div>
+
+          {/* INPUTS */}
+          <input
+            type="text"
+            className="w-full border px-4 py-2 rounded-md text-sm"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Product Name"
+          />
+
+          <textarea
+            className="w-full border px-4 py-2 rounded-md text-sm"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Description"
+          />
+
+          <input
+            type="number"
+            className="w-full border px-4 py-2 rounded-md text-sm"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            placeholder="Price"
+          />
+
+          <input
+            type="number"
+            className="w-full border px-4 py-2 rounded-md text-sm"
+            value={quantity}
+            onChange={(e) => setQuantity(e.target.value)}
+            placeholder="Quantity"
+          />
+
+          {/* SHIPPING */}
+          <select
+            className="w-full border px-4 py-2 rounded-md text-sm"
+            value={shipping}
+            onChange={(e) => setShipping(e.target.value)}
+          >
+            <option value="">Shipping?</option>
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+          </select>
+
+          {/* BUTTONS */}
+          <button
+            onClick={handleUpdate}
+            className="w-full bg-black text-white py-2 rounded-md hover:bg-gray-800"
+          >
+            Update Product
+          </button>
+
+          <button
+            onClick={handleDelete}
+            className="w-full border py-2 rounded-md hover:bg-gray-100"
+          >
+            Delete Product
+          </button>
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
     </Layout>
   );
 };
